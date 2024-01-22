@@ -18,7 +18,7 @@ namespace SystemLibrary
             cbStatus.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
-        private void btnCancelar_Click(object sender, EventArgs e)
+        private void BtnCancelar_Click(object sender, EventArgs e)
         {
             FrmPricipal frmPricipal = new FrmPricipal();
             frmPricipal.Visible = true;
@@ -26,7 +26,7 @@ namespace SystemLibrary
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             FrmPricipal frmPricipal = new FrmPricipal();
             frmPricipal.Visible = true;

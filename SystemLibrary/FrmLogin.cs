@@ -25,21 +25,64 @@ namespace SystemLibrary
 
         private void btnEntrar_Click(object sender, EventArgs e)
         {
-            SQLiteConnection conexao = Banco.ConexaoDB();
-            if (txtUsuario.Text == "Cleiton" && txtSenha.Text == "123")
+            if (vericaSeEstaPreenchido())
             {
-                FrmPricipal principal = new FrmPricipal();
-                principal.Show();
-                this.Visible = false;
-                this.Close();
+                List<Usuarios> listaUsuario = Usuarios.GetUsuarios();
+                var usuario = listaUsuario.FirstOrDefault(u => u.Usuario == txtUsuario.Text && u.Senha == txtSenha.Text);
+                if (verificaSeListaUsuarioEstaVazia(listaUsuario))
+                {
+                    Usuarios usuarioCad = new Usuarios
+                    {
+                        ID = 1,
+                        Usuario = txtUsuario.Text,
+                        Senha = txtSenha.Text,
+                        LivrosRetirados = 0,
+                        Reservas = 0,
+                        Tipo = "Admin"
+                    };
+                    Usuarios.AddUsuario(usuarioCad);
+                    FrmPricipal principal = new FrmPricipal();
+                    principal.Show();
+                    this.Visible = false;
+                    this.Close();
+                }
+                else if (usuario != null)
+                {
+                    FrmPricipal principal = new FrmPricipal();
+                    principal.Show();
+                    this.Visible = false;
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Usuarío ou Senha Inválidos",
+                                    "Ocorreu um Erro ao Autenticar",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                }
             }
-            else
+        }
+
+        private bool verificaSeListaUsuarioEstaVazia(List<Usuarios> usuarios)
+        {
+            if (usuarios.Count == 0)
             {
-                MessageBox.Show("Usuarío ou Senha Inválidos",
-                                "Ocorreu um Erro ao Autenticar",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error); 
+                return true;
             }
+            return false;
+        }
+
+        private bool vericaSeEstaPreenchido()
+        {
+            if (string.IsNullOrWhiteSpace(txtUsuario.Text) || string.IsNullOrWhiteSpace(txtSenha.Text))
+            {
+                MessageBox.Show("Usuário ou senha não podem estar vazios",
+                        "Erro de autenticação",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
         }
     }
 }

@@ -1,14 +1,12 @@
-﻿using System.Data;
+﻿using System;
 using System.Data.SQLite;
 using System.IO;
-using System;
-using System.Net.NetworkInformation;
 
 namespace SystemLibrary
 {
     class Banco
     {
-        private static string dbPath;
+        public static string dbPath;
         private static SQLiteConnection conexao;
 
         public static SQLiteConnection ConexaoDB()

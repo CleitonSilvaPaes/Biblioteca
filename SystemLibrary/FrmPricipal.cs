@@ -17,7 +17,7 @@ namespace SystemLibrary
             InitializeComponent();
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void Timer1_Tick(object sender, EventArgs e)
         {
             toolStripStatusLabel2.Text = DateTime.Now.ToShortDateString();
             toolStripStatusLabel3.Text = DateTime.Now.ToShortTimeString();
@@ -28,14 +28,14 @@ namespace SystemLibrary
             Application.Exit();
         }
 
-        private void livroToolStripMenuItem_Click(object sender, EventArgs e)
+        private void LivroToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Visible = false;
             FrmCadLivros frmCadLivros = new FrmCadLivros();
             frmCadLivros.Show();
         }
 
-        private void usuarioToolStripMenuItem_Click(object sender, EventArgs e)
+        private void UsuarioToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Visible = false;
             FrmCadUsuario frmCadUsuario = new FrmCadUsuario();
