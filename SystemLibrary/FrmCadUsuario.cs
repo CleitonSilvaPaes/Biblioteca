@@ -10,23 +10,14 @@ using System.Windows.Forms;
 
 namespace SystemLibrary
 {
-    public partial class FrmCadLivros : Form
+    public partial class FrmCadUsuario : Form
     {
-        public FrmCadLivros()
+        public FrmCadUsuario()
         {
             InitializeComponent();
-            cbStatus.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
-        {
-            FrmPricipal frmPricipal = new FrmPricipal();
-            frmPricipal.Visible = true;
-            this.Close();
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
         {
             FrmPricipal frmPricipal = new FrmPricipal();
             frmPricipal.Visible = true;

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SQLite;
 
 namespace SystemLibrary
 {
@@ -24,6 +25,7 @@ namespace SystemLibrary
 
         private void btnEntrar_Click(object sender, EventArgs e)
         {
+            SQLiteConnection conexao = Banco.ConexaoDB();
             if (txtUsuario.Text == "Cleiton" && txtSenha.Text == "123")
             {
                 FrmPricipal principal = new FrmPricipal();

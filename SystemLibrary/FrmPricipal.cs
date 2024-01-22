@@ -34,5 +34,12 @@ namespace SystemLibrary
             FrmCadLivros frmCadLivros = new FrmCadLivros();
             frmCadLivros.Show();
         }
+
+        private void usuarioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Visible = false;
+            FrmCadUsuario frmCadUsuario = new FrmCadUsuario();
+            frmCadUsuario.ShowDialog();
+        }
     }
 }
