@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace SystemLibrary
 {
@@ -14,6 +15,8 @@ namespace SystemLibrary
     {
         public List<Usuarios> ListaUsuarios { get; set; }
         public Usuarios Usuario { get; set; }
+
+        
 
         public FrmCadUsuario(Usuarios usuario)
         {
@@ -92,16 +95,13 @@ namespace SystemLibrary
 
                     lblNumId.Text = (ultimoId + 1).ToString();
 
-                    MessageBox.Show("Realizado com Sucesso",
-                        "Cadastro",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+                    MostrarMensagem("Realizado com Sucesso", "Cadastro", MessageBoxIcon.Information);
                 }
                 else
                 {
-                    MessageBox.Show("Falha ao Realizar o Cadastro, Verifique se o nome do usuario ja não foi usado!!",
-                        "Cadastro",
-                        MessageBoxButtons.OK,
+                    MostrarMensagem(
+                        "Falha ao Realizar o Cadastro, Verifique se o nome do usuario ja não foi usado!!",
+                        "Cadastro", 
                         MessageBoxIcon.Warning);
                 }
             }
@@ -161,9 +161,19 @@ namespace SystemLibrary
 
                 // Define a lista filtrada como a fonte de dados do DataGridView
                 dataGridView1.DataSource = usuariosFiltrados;
+
+                // Ajusta o AutoSizeMode das primeiras colunas para DisplayedCells
+                dataGridView1.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                dataGridView1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+
+                // Ajusta o AutoSizeMode da última coluna para Fill
+                dataGridView1.Columns[dataGridView1.Columns.Count - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
             else
+            {
                 dataGridView1.DataSource = null;
+            }
+                
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -171,7 +181,6 @@ namespace SystemLibrary
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = this.dataGridView1.Rows[e.RowIndex];
-
                 textBox3.Text = row.Cells["ID"].Value.ToString();
                 textBox1.Text = row.Cells["Usuario"].Value.ToString();
 
@@ -183,5 +192,107 @@ namespace SystemLibrary
                 }
             }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            FrmPricipal frmPricipal = new FrmPricipal(this.ListaUsuarios, this.Usuario);
+            frmPricipal.Visible = true;
+            this.Close();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            int id = Convert.ToInt32(textBox3.Text);
+            var usuario = ListaUsuarios.FirstOrDefault(u => u.ID == id);
+
+            if (usuario == null)
+            {
+                MostrarMensagem("Selecione um Usuario valido", "Atualizacao de Cadastro", MessageBoxIcon.Information);
+                return;
+            }
+
+            bool podeEditar = (this.Usuario.Tipo == "Funcionario" && (usuario.Tipo == "Funcionario" || usuario.Tipo == "Cliente"))
+                              || this.Usuario.Tipo == "Admin";
+
+            if (podeEditar)
+            {
+                AtualizarUsuario(usuario);
+            }
+            else
+            {
+                MostrarMensagem("Você Nao tem perimicao para alterar o registro", "Atualizacao de Cadastro", MessageBoxIcon.Error);
+            }
+
+            this.ListaUsuarios = Usuarios.GetUsuarios();
+            LimparCampos();
+        }
+        
+        private void button3_Click(object sender, EventArgs e)
+        {
+            int id = Convert.ToInt32(textBox3.Text);
+            var usuario = ListaUsuarios.FirstOrDefault(u => u.ID == id);
+
+            if (usuario == null)
+            {
+                MostrarMensagem("Selecione um Usuario valido", "Remover Cadastro", MessageBoxIcon.Information);
+                return;
+            }
+
+            bool podeRemover = (this.Usuario.Tipo == "Funcionario" && (usuario.Tipo == "Funcionario" || usuario.Tipo == "Cliente"))
+                              || this.Usuario.Tipo == "Admin";
+
+            if (podeRemover)
+            {
+                RemoverUsuario(usuario);
+            }
+            else
+            {
+                MostrarMensagem("Você Nao tem perimicao para remover o registro", "Remover Cadastro", MessageBoxIcon.Error);
+            }
+
+            this.ListaUsuarios = Usuarios.GetUsuarios();
+            LimparCampos();
+        }
+
+        private void MostrarMensagem(string mensagem, string titulo, MessageBoxIcon icone)
+        {
+            MessageBox.Show(mensagem, titulo, MessageBoxButtons.OK, icone);
+        }
+
+        private void RemoverUsuario(Usuarios usuario)
+        {
+            if (Usuarios.RemoveUsuario(usuario))
+            {
+                MostrarMensagem("Removido com sucesso", "Remover Cadastro", MessageBoxIcon.Information);
+            }
+            else
+            {
+                MostrarMensagem("Falha ao remover usuario", "Remover Cadastro", MessageBoxIcon.Error);
+            }
+        }
+
+        private void AtualizarUsuario(Usuarios usuario)
+        {
+            usuario.Usuario = textBox1.Text;
+            usuario.Senha = textBox2.Text;
+            usuario.Tipo = comboBox1.Text;
+
+            if (Usuarios.UpdateUsuario(usuario))
+            {
+                MostrarMensagem("Atualizado com sucesso", "Atualizacao de Cadastro", MessageBoxIcon.Information);
+            }
+            else
+            {
+                MostrarMensagem("Falha ao atualizar usuario", "Atualizacao de Cadastro", MessageBoxIcon.Error);
+            }
+        }
+
+        private void LimparCampos()
+        {
+            textBox3.Clear();
+            textBox1.Clear();
+            textBox2.Clear();
+        }
+
     }
 }

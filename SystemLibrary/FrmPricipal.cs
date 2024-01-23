@@ -57,13 +57,13 @@ namespace SystemLibrary
         {
             this.Visible = false;
             FrmCadUsuario frmCadUsuario = new FrmCadUsuario(Usuario);
-            frmCadUsuario.ShowDialog();
+            frmCadUsuario.Show();
         }
 
         private void sairToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmLogin frmLogin = new FrmLogin();
-            frmLogin.ShowDialog();
+            frmLogin.Show();
             this.Visible = false;
         }
     }

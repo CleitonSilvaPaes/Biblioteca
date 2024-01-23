@@ -94,6 +94,64 @@ namespace SystemLibrary
             }
         }
 
+        public static bool UpdateUsuario(Usuarios usuario)
+        {
+            try
+            {
+                using (var conexao = Banco.ConexaoDB())
+                {
+                    conexao.Open();
+                    using (var transacao = conexao.BeginTransaction())
+                    {
+                        using (var comando = new SQLiteCommand(conexao))
+                        {
+                            comando.CommandText = "UPDATE Usuarios SET Usuario = @Usuario, Senha = @Senha, Reservas = @Reservas, LivrosRetirados = @LivrosRetirados, MultaTotal = @MutaTotal, Tipo = @Tipo WHERE ID = @ID";
+                            comando.Parameters.AddWithValue("@ID", usuario.ID);
+                            comando.Parameters.AddWithValue("@Usuario", usuario.Usuario);
+                            comando.Parameters.AddWithValue("@Senha", usuario.Senha);
+                            comando.Parameters.AddWithValue("@Reservas", usuario.Reservas);
+                            comando.Parameters.AddWithValue("@LivrosRetirados", usuario.LivrosRetirados);
+                            comando.Parameters.AddWithValue("@MutaTotal", usuario.MultaTotal);
+                            comando.Parameters.AddWithValue("@Tipo", usuario.Tipo);
+                            comando.ExecuteNonQuery();
+                        }
+                        transacao.Commit();
+                    }
+                }
+                return true;
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
+        public static bool RemoveUsuario(Usuarios usuario)
+        {
+            try
+            {
+                using (var conexao = Banco.ConexaoDB())
+                {
+                    conexao.Open();
+                    using (var transacao = conexao.BeginTransaction())
+                    {
+                        using (var comando = new SQLiteCommand(conexao))
+                        {
+                            comando.CommandText = "DELETE FROM Usuarios WHERE ID = @ID";
+                            comando.Parameters.AddWithValue("@ID", usuario.ID);
+                            comando.ExecuteNonQuery();
+                        }
+                        transacao.Commit();
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
 
     }
 
