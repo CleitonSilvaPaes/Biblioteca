@@ -15,6 +15,7 @@ namespace SystemLibrary
         public string Senha { get; set; }
         public int Reservas { get; set; }
         public int LivrosRetirados { get; set; }
+        public double MultaTotal { get; set; }
         public string Tipo { get; set; }
 
         public static List<Usuarios> GetUsuarios()
@@ -36,7 +37,8 @@ namespace SystemLibrary
                                 Senha = reader.GetString(2),
                                 Reservas = reader.GetInt32(3),
                                 LivrosRetirados = reader.GetInt32(4),
-                                Tipo = reader.GetString(5)
+                                MultaTotal = reader.GetDouble(5),
+                                Tipo = reader.GetString(6)
                             };
                             listaUsuario.Add(usuario);
                         }
@@ -53,17 +55,45 @@ namespace SystemLibrary
                 conexao.Open();
                 using (var comando = new SQLiteCommand(conexao))
                 {
-                    comando.CommandText = "INSERT INTO Usuarios (ID, Usuario, Senha, Reservas, LivrosRetirados, Tipo) VALUES (@ID, @Usuario, @Senha, @Reservas, @LivrosRetirados, @Tipo)";
+                    comando.CommandText = "INSERT INTO Usuarios (ID, Usuario, Senha, Reservas, LivrosRetirados, MultaTotal, Tipo) VALUES (@ID, @Usuario, @Senha, @Reservas, @LivrosRetirados, @MutaTotal, @Tipo)";
                     comando.Parameters.AddWithValue("@ID", usuario.ID);
                     comando.Parameters.AddWithValue("@Usuario", usuario.Usuario);
                     comando.Parameters.AddWithValue("@Senha", usuario.Senha);
                     comando.Parameters.AddWithValue("@Reservas", usuario.Reservas);
                     comando.Parameters.AddWithValue("@LivrosRetirados", usuario.LivrosRetirados);
+                    comando.Parameters.AddWithValue("@MutaTotal", usuario.MultaTotal);
                     comando.Parameters.AddWithValue("@Tipo", usuario.Tipo);
                     comando.ExecuteNonQuery();
                 }
             }
         }
+
+        public static bool AddUsuario(int id, string usuario, string senha, string tipo)
+        {
+            try
+            {
+                using (var conexao = Banco.ConexaoDB())
+                {
+                    conexao.Open();
+                    using (var comando = new SQLiteCommand(conexao))
+                    {
+                        comando.CommandText = "INSERT INTO Usuarios (ID, Usuario, Senha, Tipo) VALUES (@ID, @Usuario, @Senha, @Tipo)";
+                        comando.Parameters.AddWithValue("@ID", id);
+                        comando.Parameters.AddWithValue("@Usuario", usuario);
+                        comando.Parameters.AddWithValue("@Senha", senha);
+                        comando.Parameters.AddWithValue("@Tipo", tipo);
+                        comando.ExecuteNonQuery();
+                        return true;
+                    }
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
 
     }
 

@@ -12,6 +12,24 @@ namespace SystemLibrary
 {
     public partial class FrmPricipal : Form
     {
+        public List<Usuarios> ListaUsuarios { get; set; }
+        public Usuarios Usuario { get; set; }
+
+        public FrmPricipal(List<Usuarios> listaUsuarios, Usuarios usuario)
+        {
+            InitializeComponent();
+            this.ListaUsuarios = listaUsuarios;
+            this.Usuario = usuario;
+
+            if (this.Usuario.Tipo == "Cliente")
+            {
+                cadastroToolStripMenuItem.Visible = false;
+            }
+
+            toolStripStatusLabel4.Text = $"Logado como {usuario.Tipo}";
+            toolStripStatusLabel1.Text = $"Bem vindo (Sr/Sra){usuario.Usuario.ToUpper()} !";
+        }
+
         public FrmPricipal()
         {
             InitializeComponent();
@@ -38,8 +56,15 @@ namespace SystemLibrary
         private void UsuarioToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Visible = false;
-            FrmCadUsuario frmCadUsuario = new FrmCadUsuario();
+            FrmCadUsuario frmCadUsuario = new FrmCadUsuario(Usuario);
             frmCadUsuario.ShowDialog();
+        }
+
+        private void sairToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmLogin frmLogin = new FrmLogin();
+            frmLogin.ShowDialog();
+            this.Visible = false;
         }
     }
 }

@@ -28,27 +28,29 @@ namespace SystemLibrary
             if (vericaSeEstaPreenchido())
             {
                 List<Usuarios> listaUsuario = Usuarios.GetUsuarios();
-                var usuario = listaUsuario.FirstOrDefault(u => u.Usuario == txtUsuario.Text && u.Senha == txtSenha.Text);
+                var usuario = listaUsuario.FirstOrDefault(u => u.Usuario == txtUsuario.Text.ToLower() && u.Senha == txtSenha.Text.ToLower());
                 if (verificaSeListaUsuarioEstaVazia(listaUsuario))
                 {
                     Usuarios usuarioCad = new Usuarios
                     {
                         ID = 1,
-                        Usuario = txtUsuario.Text,
-                        Senha = txtSenha.Text,
+                        Usuario = txtUsuario.Text.ToLower(),
+                        Senha = txtSenha.Text.ToLower(),
                         LivrosRetirados = 0,
+                        MultaTotal = 0,
                         Reservas = 0,
                         Tipo = "Admin"
                     };
                     Usuarios.AddUsuario(usuarioCad);
-                    FrmPricipal principal = new FrmPricipal();
+                    listaUsuario.Add(usuarioCad);
+                    FrmPricipal principal = new FrmPricipal(listaUsuario, usuarioCad);
                     principal.Show();
                     this.Visible = false;
                     this.Close();
                 }
                 else if (usuario != null)
                 {
-                    FrmPricipal principal = new FrmPricipal();
+                    FrmPricipal principal = new FrmPricipal(listaUsuario, usuario);
                     principal.Show();
                     this.Visible = false;
                     this.Close();

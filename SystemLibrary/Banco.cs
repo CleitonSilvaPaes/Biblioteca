@@ -15,7 +15,8 @@ namespace SystemLibrary
             string dbName = "biblioteca.sqlite3";
             string currentDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName;
             dbPath = Path.Combine(currentDirectory, dbFolder, dbName);
-            CriarDB();
+            if (!File.Exists(dbPath))
+                CriarDB();
             conexao = new SQLiteConnection($"Data Source={dbPath}");
             return conexao;
         }
@@ -51,10 +52,12 @@ namespace SystemLibrary
                         ID INTEGER PRIMARY KEY,
                         Usuario TEXT UNIQUE NOT NULL,
                         Senha TEXT NOT NULL,
-                        Reservas INTEGER,
+                        Reservas INTEGER DEFAULT 0,
                         LivrosRetirados INTEGER DEFAULT 0,
+                        MultaTotal REAL DEFAULT 0,
                         Tipo TEXT CHECK(Tipo IN ('Cliente', 'Funcionario', 'Admin'))
                     );";
+
 
                 using (SQLiteCommand command = new SQLiteCommand(sql, conn))
                 {
