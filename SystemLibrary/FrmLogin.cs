@@ -37,18 +37,20 @@ namespace SystemLibrary
                         Usuario = txtUsuario.Text,
                         Senha = txtSenha.Text,
                         LivrosRetirados = 0,
+                        MultaTotal = 0,
                         Reservas = 0,
                         Tipo = "Admin"
                     };
                     Usuarios.AddUsuario(usuarioCad);
-                    FrmPricipal principal = new FrmPricipal();
+                    listaUsuario.Add(usuarioCad);
+                    FrmPricipal principal = new FrmPricipal(listaUsuario, usuarioCad);
                     principal.Show();
                     this.Visible = false;
                     this.Close();
                 }
                 else if (usuario != null)
                 {
-                    FrmPricipal principal = new FrmPricipal();
+                    FrmPricipal principal = new FrmPricipal(listaUsuario, usuario);
                     principal.Show();
                     this.Visible = false;
                     this.Close();
