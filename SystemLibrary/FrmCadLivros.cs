@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace SystemLibrary
 {
@@ -115,6 +116,30 @@ namespace SystemLibrary
                 return true;
             }
             return false;
+        }
+
+        private void txtId_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Este campo aceita somente números");
+            }
+        }
+
+        private void txtId_TextChanged(object sender, EventArgs e)
+        {
+            this.ListaLivros = Livro.GetLivros();
+            int idLivro = Convert.ToInt32(txtId.Text);
+            var livro = ListaLivros.FirstOrDefault(u => u.ID == idLivro);
+
+            if (livro != null)
+            {
+                txtNome1.Text = livro.Nome;
+                txtAutor1.Text = livro.Autor;
+                txtSinopse.Text = livro.Sinopse;
+                dtLancamento1.Value = livro.DataLancamento;
+            }
         }
     }
 }
