@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 
 namespace SystemLibrary
 {
@@ -16,7 +11,7 @@ namespace SystemLibrary
         public List<Usuarios> ListaUsuarios { get; set; }
         public Usuarios Usuario { get; set; }
 
-        
+
 
         public FrmCadUsuario(Usuarios usuario)
         {
@@ -101,7 +96,7 @@ namespace SystemLibrary
                 {
                     MostrarMensagem(
                         "Falha ao Realizar o Cadastro, Verifique se o nome do usuario ja não foi usado!!",
-                        "Cadastro", 
+                        "Cadastro",
                         MessageBoxIcon.Warning);
                 }
             }
@@ -173,7 +168,7 @@ namespace SystemLibrary
             {
                 dataGridView1.DataSource = null;
             }
-                
+
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -226,7 +221,7 @@ namespace SystemLibrary
             this.ListaUsuarios = Usuarios.GetUsuarios();
             LimparCampos();
         }
-        
+
         private void button3_Click(object sender, EventArgs e)
         {
             int id = Convert.ToInt32(textBox3.Text);

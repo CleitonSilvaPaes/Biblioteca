@@ -49,7 +49,7 @@ namespace SystemLibrary
         private void LivroToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Visible = false;
-            FrmCadLivros frmCadLivros = new FrmCadLivros();
+            FrmCadLivros frmCadLivros = new FrmCadLivros(Usuario);
             frmCadLivros.Show();
         }
 

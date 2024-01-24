@@ -97,11 +97,13 @@
     <Compile Include="FrmSplash.Designer.cs">
       <DependentUpon>FrmSplash.cs</DependentUpon>
     </Compile>
+    <Compile Include="Livros.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Usuarios.cs" />
     <EmbeddedResource Include="FrmCadLivros.resx">
       <DependentUpon>FrmCadLivros.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmCadUsuario.resx">
       <DependentUpon>FrmCadUsuario.cs</DependentUpon>

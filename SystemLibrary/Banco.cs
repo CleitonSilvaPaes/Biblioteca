@@ -80,7 +80,7 @@ namespace SystemLibrary
                     Sinopse TEXT,
                     DataLancamento DATE,
                     Status TEXT CHECK(Status IN ('Disponível', 'Reservado', 'Retirado')),
-                    Reservas INTEGER
+                    Reservas INTEGER DEFAULT 0
                 );";
 
                 using (SQLiteCommand command = new SQLiteCommand(sql, conn))
