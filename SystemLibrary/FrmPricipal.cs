@@ -64,5 +64,12 @@ namespace SystemLibrary
             frmLogin.Show();
             this.Visible = false;
         }
+
+        private void locaçãoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmLocacao frmLocacao = new FrmLocacao(Usuario);
+            frmLocacao.Show();
+            this.Visible = false;
+        }
     }
 }

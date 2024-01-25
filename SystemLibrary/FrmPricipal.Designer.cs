@@ -48,8 +48,8 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -137,14 +137,14 @@
             // usuarioToolStripMenuItem
             // 
             this.usuarioToolStripMenuItem.Name = "usuarioToolStripMenuItem";
-            this.usuarioToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+            this.usuarioToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.usuarioToolStripMenuItem.Text = "Usuario";
             this.usuarioToolStripMenuItem.Click += new System.EventHandler(this.UsuarioToolStripMenuItem_Click);
             // 
             // livroToolStripMenuItem
             // 
             this.livroToolStripMenuItem.Name = "livroToolStripMenuItem";
-            this.livroToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+            this.livroToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.livroToolStripMenuItem.Text = "Livro";
             this.livroToolStripMenuItem.Click += new System.EventHandler(this.LivroToolStripMenuItem_Click);
             // 
@@ -160,14 +160,15 @@
             // devoluçãoToolStripMenuItem
             // 
             this.devoluçãoToolStripMenuItem.Name = "devoluçãoToolStripMenuItem";
-            this.devoluçãoToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.devoluçãoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.devoluçãoToolStripMenuItem.Text = "Devolução";
             // 
             // locaçãoToolStripMenuItem
             // 
             this.locaçãoToolStripMenuItem.Name = "locaçãoToolStripMenuItem";
-            this.locaçãoToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.locaçãoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.locaçãoToolStripMenuItem.Text = "Locação";
+            this.locaçãoToolStripMenuItem.Click += new System.EventHandler(this.locaçãoToolStripMenuItem_Click);
             // 
             // sairToolStripMenuItem
             // 
@@ -198,10 +199,10 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
 
         }

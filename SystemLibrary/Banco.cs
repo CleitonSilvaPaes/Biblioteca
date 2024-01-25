@@ -17,6 +17,7 @@ namespace SystemLibrary
             dbPath = Path.Combine(currentDirectory, dbFolder, dbName);
             if (!File.Exists(dbPath))
                 CriarDB();
+            CriarTabelas();
             conexao = new SQLiteConnection($"Data Source={dbPath}");
             return conexao;
         }
@@ -33,12 +34,16 @@ namespace SystemLibrary
             {
                 SQLiteConnection.CreateFile(dbPath);
             }
+            CriarTabelas();
+
+        }
+
+        private static void CriarTabelas()
+        {
             CriarTabelaUsuario();
             CriarTabelaLivro();
             CriarTabelaReserva();
             CriarTabelaRetirada();
-            CriarTabelaFilaReserva();
-
         }
 
         private static void CriarTabelaUsuario()
@@ -90,31 +95,6 @@ namespace SystemLibrary
             }
         }
 
-        private static void CriarTabelaReserva()
-        {
-            using (SQLiteConnection conn = new SQLiteConnection($"Data Source={dbPath};"))
-            {
-                conn.Open();
-
-                string sql = @"
-                    CREATE TABLE IF NOT EXISTS Reservas (
-                        ID INTEGER PRIMARY KEY,
-                        UsuarioID INTEGER,
-                        LivroID INTEGER,
-                        DataReserva DATE,
-                        DataDevolucao DATE,
-                        Multa REAL,
-                        FOREIGN KEY (UsuarioID) REFERENCES Usuarios (ID),
-                        FOREIGN KEY (LivroID) REFERENCES Livros (ID)
-                    );";
-
-                using (SQLiteCommand command = new SQLiteCommand(sql, conn))
-                {
-                    command.ExecuteNonQuery();
-                }
-            }
-        }
-
         private static void CriarTabelaRetirada()
         {
             using (SQLiteConnection conn = new SQLiteConnection($"Data Source={dbPath};"))
@@ -124,11 +104,13 @@ namespace SystemLibrary
                 string sql = @"
                     CREATE TABLE IF NOT EXISTS Retiradas (
                         ID INTEGER PRIMARY KEY,
+                        FuncionarioID INTEGER,
                         UsuarioID INTEGER,
                         LivroID INTEGER,
                         DataRetirada DATE,
                         DataDevolucao DATE,
                         Multa REAL,
+                        FOREIGN KEY (FuncionarioID) REFERENCES Usuarios (ID),
                         FOREIGN KEY (UsuarioID) REFERENCES Usuarios (ID),
                         FOREIGN KEY (LivroID) REFERENCES Livros (ID)
                     );";
@@ -140,18 +122,22 @@ namespace SystemLibrary
             }
         }
 
-        private static void CriarTabelaFilaReserva()
+        private static void CriarTabelaReserva()
         {
             using (SQLiteConnection conn = new SQLiteConnection($"Data Source={dbPath};"))
             {
                 conn.Open();
 
                 string sql = @"
-                    CREATE TABLE IF NOT EXISTS FilaReservas (
+                    CREATE TABLE IF NOT EXISTS Reservas (
                         ID INTEGER PRIMARY KEY,
-                        ReservaID INTEGER,
-                        Posicao INTEGER,
-                        FOREIGN KEY (ReservaID) REFERENCES Reservas (ID)
+                        FuncionarioID INTEGER,
+                        UsuarioID INTEGER,
+                        LivroID INTEGER,
+                        Multa REAL,
+                        FOREIGN KEY (FuncionarioID) REFERENCES Usuarios (ID),
+                        FOREIGN KEY (UsuarioID) REFERENCES Usuarios (ID),
+                        FOREIGN KEY (LivroID) REFERENCES Livros (ID)
                     );";
 
                 using (SQLiteCommand command = new SQLiteCommand(sql, conn))
