@@ -25,6 +25,8 @@ namespace SystemLibrary
             cbStatus.Items.Add("Disponível");
             cbStatus.SelectedIndex = 0;
 
+            cbStatus1.Enabled = false;
+
             if (!verificaSeListaLivroEstaVazia(this.ListaLivros)){
                 int ultimoId = ListaLivros.Max(u => u.ID);
                 lblNumId.Text = (ultimoId + 1).ToString();
@@ -35,17 +37,10 @@ namespace SystemLibrary
 
         private void BtnCancelar_Click(object sender, EventArgs e)
         {
-            FrmPricipal frmPricipal = new FrmPricipal();
+            FrmPricipal frmPricipal = new FrmPricipal(this.Usuario);
             frmPricipal.Visible = true;
             this.Close();
 
-        }
-
-        private void Button1_Click(object sender, EventArgs e)
-        {
-            FrmPricipal frmPricipal = new FrmPricipal();
-            frmPricipal.Visible = true;
-            this.Close();
         }
 
         private void btnCadastrar_Click(object sender, EventArgs e)
@@ -93,13 +88,43 @@ namespace SystemLibrary
                 Sinopse = sinopseLivro,
                 Status = statusLivro
             };
-            Livro.AddLivro(livro);
+            if (Livro.AddLivro(livro))
+            {
+                MostrarMensagem("Livro castrado com sucesso", "Cadastro", MessageBoxIcon.Information);
+                txtNome.Text = string.Empty;
+                txtAutor.Text = string.Empty;
+                txtSinopse.Text = string.Empty;
+            }
+            else
+                MostrarMensagem("Falha ao castrado o livro", "Cadastro", MessageBoxIcon.Error);
+
             this.ListaLivros = Livro.GetLivros();
+            int ultimoId = ListaLivros.Max(u => u.ID);
+            lblNumId.Text = (ultimoId + 1).ToString();
         }
 
         private void MostrarMensagem(string mensagem, string titulo, MessageBoxIcon icone)
         {
             MessageBox.Show(mensagem, titulo, MessageBoxButtons.OK, icone);
+        }
+
+        public void PreencherDataGridView()
+        {
+            // Realiza a busca
+            var livrosFiltrados = this.ListaLivros
+                .Where(l => l.Nome.ToLower().StartsWith(txtNome1.Text.ToLower()))
+                .Select(l => new { l.ID, l.Nome, l.Autor })
+                .ToList();
+            // Define a lista filtrada como a fonte de dados do DataGridView
+            dataGridView1.DataSource = livrosFiltrados;
+
+            // Ajusta o AutoSizeMode das primeiras colunas para DisplayedCells
+            dataGridView1.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dataGridView1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+
+            // Ajusta o AutoSizeMode da última coluna para Fill
+            dataGridView1.Columns[dataGridView1.Columns.Count - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
         }
 
         private bool validaCampo(string campo, int min, int max)
@@ -130,16 +155,208 @@ namespace SystemLibrary
         private void txtId_TextChanged(object sender, EventArgs e)
         {
             this.ListaLivros = Livro.GetLivros();
-            int idLivro = Convert.ToInt32(txtId.Text);
-            var livro = ListaLivros.FirstOrDefault(u => u.ID == idLivro);
+            
+            Livro livro = obterLivro();
 
             if (livro != null)
             {
                 txtNome1.Text = livro.Nome;
                 txtAutor1.Text = livro.Autor;
-                txtSinopse.Text = livro.Sinopse;
+                txtSinopse1.Text = livro.Sinopse;
                 dtLancamento1.Value = livro.DataLancamento;
+                cbStatus1.Text = livro.Status;
             }
+            else
+            {
+                txtNome1.Text = string.Empty;
+                txtAutor1.Text = string.Empty;
+                txtSinopse1.Text = string.Empty;
+                dtLancamento1.Value = DateTime.Now;
+                cbStatus1.Text = string.Empty;
+            }
+        }
+
+        private void btnCancelar1_Click(object sender, EventArgs e)
+        {
+            FrmPricipal frmPricipal = new FrmPricipal(this.Usuario);
+            frmPricipal.Visible = true;
+            this.Close();
+        }
+
+        private void btnAtualizar_Click(object sender, EventArgs e)
+        {
+            Livro livro = obterLivro();
+
+            if (livro == null)
+            {
+                MostrarMensagem("Selecione um Livro valido", "Atualizacao de Cadastro", MessageBoxIcon.Information);
+                return;
+            }
+            else
+            {
+                // Atualizar Livro
+                AtualizarLivro(livro);
+            }
+            this.ListaLivros = Livro.GetLivros();
+            LimparDadosTela();
+        }
+
+        private void btnRemover_Click(object sender, EventArgs e)
+        {
+            Livro livro = obterLivro();
+
+            if (livro == null)
+            {
+                MostrarMensagem("Selecione um Livro valido", "Remover de Cadastro", MessageBoxIcon.Information);
+                return;
+            }
+            else
+            {
+                // Atualizar Livro
+                RemoverLivro(livro);
+            }
+            this.ListaLivros = Livro.GetLivros();
+            LimparDadosTela();
+        }
+
+        private void txtAutor1_TextChanged(object sender, EventArgs e)
+        {
+            if (txtAutor1.Text.Length >= 3)
+            {
+                PreencherDataGridView();
+            } else if (txtAutor1.Text.Length == 0)
+            {
+                LimparDadosTela();
+            }
+            else
+            {
+                dataGridView1.DataSource = null;
+            }
+
+            this.ListaLivros = Livro.GetLivros();
+        }
+
+        private void txtNome1_TextChanged(object sender, EventArgs e)
+        {
+            if (txtNome1.Text.Length >= 3)
+            {
+                PreencherDataGridView();
+            }
+            else if (txtNome1.Text.Length == 0)
+            {
+                LimparDadosTela();
+            }
+            else
+            {
+                dataGridView1.DataSource = null;
+            }
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            this.ListaLivros = Livro.GetLivros();
+            if (e.RowIndex >= 0)
+            {
+                // Mova a criação da lista de nomes de colunas para aqui
+                List<string> columnNames = new List<string>();
+                foreach (DataGridViewColumn column in dataGridView1.Columns)
+                {
+                    columnNames.Add(column.Name);
+                }
+
+                DataGridViewRow row = this.dataGridView1.Rows[e.RowIndex];
+
+                // Desabilitar o evento TextChanged
+                txtNome1.TextChanged -= txtNome1_TextChanged;
+                txtId.TextChanged -= txtId_TextChanged;
+
+                txtId.Text = row.Cells["ID"].Value.ToString();
+                txtNome1.Text = row.Cells["Nome"].Value.ToString();
+                txtAutor1.Text = row.Cells["Autor"].Value.ToString();
+
+                // Reabilitar o evento TextChanged
+                txtNome1.TextChanged += txtNome1_TextChanged;
+                txtId.TextChanged += txtId_TextChanged;
+
+                var livro = ListaLivros.FirstOrDefault(l => l.ID == int.Parse(txtId.Text));
+                if (livro != null)
+                {
+                    dtLancamento1.Value = livro.DataLancamento;
+                    cbStatus1.Text = livro.Status;
+                    txtSinopse1.Text = livro.Sinopse;
+                }
+            }
+        }
+        
+        private void LimparDadosTela()
+        {
+            txtId.Text = string.Empty;
+            txtNome1.Text = string.Empty;
+            txtAutor1.Text = string.Empty;
+            txtSinopse1.Text = string.Empty;
+            cbStatus.Text = string.Empty;
+            dtLancamento1.Value = DateTime.Now;
+            dataGridView1.DataSource = null;
+
+            txtNome.Text = string.Empty;
+            txtAutor.Text = string.Empty;
+            txtSinopse.Text = string.Empty;
+            dtLancamento1.Value = DateTime.Now;
+            dataGridView1.DataSource = null;
+
+            this.ListaLivros = Livro.GetLivros();
+            if (!verificaSeListaLivroEstaVazia(this.ListaLivros))
+            {
+                int ultimoId = ListaLivros.Max(u => u.ID);
+                lblNumId.Text = (ultimoId + 1).ToString();
+            }
+            else
+                lblNumId.Text = "1";
+        }
+    
+        private void AtualizarLivro(Livro livro)
+        {
+            livro.ID = int.Parse(txtId.Text);
+            livro.Nome = txtNome1.Text;
+            livro.Autor = txtAutor1.Text;
+            livro.DataLancamento = dtLancamento1.Value;
+            livro.Status = cbStatus1.Text;
+            livro.Sinopse = txtSinopse1.Text;
+
+            if (Livro.UpdateLivro(livro))
+                MostrarMensagem("Atualizado com sucesso", "Atualizacao de Cadastro", MessageBoxIcon.Information);
+            else
+                MostrarMensagem("Falha ao atualizar livro", "Atualizacao de Cadastro", MessageBoxIcon.Error);
+        }
+
+        private void RemoverLivro(Livro livro)
+        {
+            if (livro.Status == "Disponível")
+            {
+                if (Livro.RemoveLivro(livro))
+                    MostrarMensagem("Removido com sucesso", "Remoção de Cadastro", MessageBoxIcon.Information);
+                else
+                    MostrarMensagem("Falha ao remover livro", "Remoção de Cadastro", MessageBoxIcon.Error);
+            }
+            else
+                MostrarMensagem("Livro so pode ser removido quando o Status tiver Disponível", "Remoção de Cadastro", MessageBoxIcon.Error);
+        }
+
+        private Livro obterLivro()
+        {
+            int idLivro;
+            try
+            {
+                idLivro = Convert.ToInt32(txtId.Text);
+
+            }
+            catch (FormatException)
+            {
+                idLivro = 0;
+            }
+            var livro = ListaLivros.FirstOrDefault(l => l.ID == idLivro);
+
+            return livro;
         }
     }
 }

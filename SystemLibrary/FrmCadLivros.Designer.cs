@@ -48,7 +48,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.txtSinopse1 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.cbStatus1 = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -250,7 +250,7 @@
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.dataGridView1);
-            this.tabPage2.Controls.Add(this.textBox2);
+            this.tabPage2.Controls.Add(this.txtSinopse1);
             this.tabPage2.Controls.Add(this.label6);
             this.tabPage2.Controls.Add(this.cbStatus1);
             this.tabPage2.Controls.Add(this.label5);
@@ -275,21 +275,22 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(45, 215);
+            this.dataGridView1.Location = new System.Drawing.Point(42, 215);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(525, 109);
+            this.dataGridView1.Size = new System.Drawing.Size(529, 109);
             this.dataGridView1.TabIndex = 23;
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
-            // textBox2
+            // txtSinopse1
             // 
-            this.textBox2.BackColor = System.Drawing.SystemColors.WindowFrame;
-            this.textBox2.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(39, 93);
-            this.textBox2.MaxLength = 1500;
-            this.textBox2.Multiline = true;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(532, 109);
-            this.textBox2.TabIndex = 22;
+            this.txtSinopse1.BackColor = System.Drawing.SystemColors.WindowFrame;
+            this.txtSinopse1.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSinopse1.Location = new System.Drawing.Point(39, 93);
+            this.txtSinopse1.MaxLength = 1500;
+            this.txtSinopse1.Multiline = true;
+            this.txtSinopse1.Name = "txtSinopse1";
+            this.txtSinopse1.Size = new System.Drawing.Size(532, 109);
+            this.txtSinopse1.TabIndex = 22;
             // 
             // label6
             // 
@@ -343,6 +344,7 @@
             this.txtAutor1.Name = "txtAutor1";
             this.txtAutor1.Size = new System.Drawing.Size(220, 26);
             this.txtAutor1.TabIndex = 16;
+            this.txtAutor1.TextChanged += new System.EventHandler(this.txtAutor1_TextChanged);
             // 
             // label3
             // 
@@ -360,8 +362,9 @@
             this.txtNome1.Location = new System.Drawing.Point(146, 8);
             this.txtNome1.MaxLength = 250;
             this.txtNome1.Name = "txtNome1";
-            this.txtNome1.Size = new System.Drawing.Size(117, 26);
+            this.txtNome1.Size = new System.Drawing.Size(184, 26);
             this.txtNome1.TabIndex = 14;
+            this.txtNome1.TextChanged += new System.EventHandler(this.txtNome1_TextChanged);
             // 
             // label2
             // 
@@ -402,6 +405,7 @@
             this.btnCancelar1.TabIndex = 26;
             this.btnCancelar1.Text = "Cancelar";
             this.btnCancelar1.UseVisualStyleBackColor = true;
+            this.btnCancelar1.Click += new System.EventHandler(this.btnCancelar1_Click);
             // 
             // btnRemover
             // 
@@ -412,6 +416,7 @@
             this.btnRemover.TabIndex = 25;
             this.btnRemover.Text = "Remover";
             this.btnRemover.UseVisualStyleBackColor = true;
+            this.btnRemover.Click += new System.EventHandler(this.btnRemover_Click);
             // 
             // btnAtualizar
             // 
@@ -422,12 +427,13 @@
             this.btnAtualizar.TabIndex = 24;
             this.btnAtualizar.Text = "Atualziar";
             this.btnAtualizar.UseVisualStyleBackColor = true;
+            this.btnAtualizar.Click += new System.EventHandler(this.btnAtualizar_Click);
             // 
             // FrmCadLivros
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1000, 552);
+            this.ClientSize = new System.Drawing.Size(804, 454);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -481,7 +487,7 @@
         private System.Windows.Forms.ComboBox cbStatus1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox txtSinopse1;
         private System.Windows.Forms.Label label6;
     }
 }

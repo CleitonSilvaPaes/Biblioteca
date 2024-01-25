@@ -43,14 +43,14 @@ namespace SystemLibrary
                     };
                     Usuarios.AddUsuario(usuarioCad);
                     listaUsuario.Add(usuarioCad);
-                    FrmPricipal principal = new FrmPricipal(listaUsuario, usuarioCad);
+                    FrmPricipal principal = new FrmPricipal(usuarioCad);
                     principal.Show();
                     this.Visible = false;
                     this.Close();
                 }
                 else if (usuario != null)
                 {
-                    FrmPricipal principal = new FrmPricipal(listaUsuario, usuario);
+                    FrmPricipal principal = new FrmPricipal(usuario);
                     principal.Show();
                     this.Visible = false;
                     this.Close();

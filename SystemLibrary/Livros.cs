@@ -77,6 +77,58 @@ namespace SystemLibrary
                 return false;
             }
         }
+
+        public static bool UpdateLivro(Livro livro)
+        {
+            try
+            {
+                using (var conexao = Banco.ConexaoDB())
+                {
+                    conexao.Open();
+                    using (var comando = new SQLiteCommand(conexao))
+                    {
+                        comando.CommandText = "UPDATE Livros SET Nome = @Nome, Autor = @Autor, Sinopse = @Sinopse, DataLancamento = @DataLancamento, Status = @Status, Reservas = @Reservas WHERE ID = @ID";
+                        comando.Parameters.AddWithValue("@ID", livro.ID);
+                        comando.Parameters.AddWithValue("@Nome", livro.Nome);
+                        comando.Parameters.AddWithValue("@Autor", livro.Autor);
+                        comando.Parameters.AddWithValue("@Sinopse", livro.Sinopse);
+                        comando.Parameters.AddWithValue("@DataLancamento", livro.DataLancamento);
+                        comando.Parameters.AddWithValue("@Status", livro.Status);
+                        comando.Parameters.AddWithValue("@Reservas", livro.Reservas);
+                        comando.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+        }
+
+        public static bool RemoveLivro(Livro livro)
+        {
+            try
+            {
+                using (var conexao = Banco.ConexaoDB())
+                {
+                    conexao.Open();
+                    using (var comando = new SQLiteCommand(conexao))
+                    {
+                        comando.CommandText = "DELETE FROM Livros WHERE ID = @ID";
+                        comando.Parameters.AddWithValue("@ID", livro.ID);
+                        comando.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+        }
     }
 
 }

@@ -50,7 +50,7 @@ namespace SystemLibrary
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            FrmPricipal frmPricipal = new FrmPricipal(this.ListaUsuarios, this.Usuario);
+            FrmPricipal frmPricipal = new FrmPricipal(this.Usuario);
             frmPricipal.Visible = true;
             this.Close();
         }
@@ -190,7 +190,7 @@ namespace SystemLibrary
 
         private void button1_Click(object sender, EventArgs e)
         {
-            FrmPricipal frmPricipal = new FrmPricipal(this.ListaUsuarios, this.Usuario);
+            FrmPricipal frmPricipal = new FrmPricipal(this.Usuario);
             frmPricipal.Visible = true;
             this.Close();
         }

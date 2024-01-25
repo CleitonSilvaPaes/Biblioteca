@@ -12,13 +12,11 @@ namespace SystemLibrary
 {
     public partial class FrmPricipal : Form
     {
-        public List<Usuarios> ListaUsuarios { get; set; }
         public Usuarios Usuario { get; set; }
 
-        public FrmPricipal(List<Usuarios> listaUsuarios, Usuarios usuario)
+        public FrmPricipal(Usuarios usuario)
         {
             InitializeComponent();
-            this.ListaUsuarios = listaUsuarios;
             this.Usuario = usuario;
 
             if (this.Usuario.Tipo == "Cliente")
