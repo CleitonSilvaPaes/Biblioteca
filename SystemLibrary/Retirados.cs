@@ -107,7 +107,7 @@ namespace SystemLibrary
             }
         }
 
-        public static bool DeleteRetirada(int retiradaID)
+        public static bool DeleteRetirada(Retirada retirada)
         {
             try
             {
@@ -117,7 +117,7 @@ namespace SystemLibrary
                     using (var comando = new SQLiteCommand(conexao))
                     {
                         comando.CommandText = "DELETE FROM Retiradas WHERE ID = @ID";
-                        comando.Parameters.AddWithValue("@ID", retiradaID);
+                        comando.Parameters.AddWithValue("@ID", retirada.ID);
                         comando.ExecuteNonQuery();
                     }
                 }

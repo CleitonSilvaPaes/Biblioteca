@@ -65,10 +65,17 @@ namespace SystemLibrary
             this.Visible = false;
         }
 
-        private void locaçãoToolStripMenuItem_Click(object sender, EventArgs e)
+        private void locacaoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmLocacao frmLocacao = new FrmLocacao(Usuario);
             frmLocacao.Show();
+            this.Visible = false;
+        }
+
+        private void devolucaoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmDevolucao frmDevolucao = new FrmDevolucao(Usuario);
+            frmDevolucao.Show();
             this.Visible = false;
         }
     }

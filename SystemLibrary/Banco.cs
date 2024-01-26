@@ -134,7 +134,6 @@ namespace SystemLibrary
                         FuncionarioID INTEGER,
                         UsuarioID INTEGER,
                         LivroID INTEGER,
-                        Multa REAL,
                         FOREIGN KEY (FuncionarioID) REFERENCES Usuarios (ID),
                         FOREIGN KEY (UsuarioID) REFERENCES Usuarios (ID),
                         FOREIGN KEY (LivroID) REFERENCES Livros (ID)

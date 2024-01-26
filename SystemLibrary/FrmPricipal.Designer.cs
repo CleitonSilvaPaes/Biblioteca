@@ -42,8 +42,8 @@
             this.usuarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.livroToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.manutencaoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.devoluçãoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.locaçãoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.devolucaoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.locacaoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sairToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
@@ -151,24 +151,25 @@
             // manutencaoToolStripMenuItem
             // 
             this.manutencaoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.devoluçãoToolStripMenuItem,
-            this.locaçãoToolStripMenuItem});
+            this.devolucaoToolStripMenuItem,
+            this.locacaoToolStripMenuItem});
             this.manutencaoToolStripMenuItem.Name = "manutencaoToolStripMenuItem";
             this.manutencaoToolStripMenuItem.Size = new System.Drawing.Size(86, 20);
             this.manutencaoToolStripMenuItem.Text = "Manutenção";
             // 
-            // devoluçãoToolStripMenuItem
+            // devolucaoToolStripMenuItem
             // 
-            this.devoluçãoToolStripMenuItem.Name = "devoluçãoToolStripMenuItem";
-            this.devoluçãoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.devoluçãoToolStripMenuItem.Text = "Devolução";
+            this.devolucaoToolStripMenuItem.Name = "devolucaoToolStripMenuItem";
+            this.devolucaoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.devolucaoToolStripMenuItem.Text = "Devolução";
+            this.devolucaoToolStripMenuItem.Click += new System.EventHandler(this.devolucaoToolStripMenuItem_Click);
             // 
-            // locaçãoToolStripMenuItem
+            // locacaoToolStripMenuItem
             // 
-            this.locaçãoToolStripMenuItem.Name = "locaçãoToolStripMenuItem";
-            this.locaçãoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.locaçãoToolStripMenuItem.Text = "Locação";
-            this.locaçãoToolStripMenuItem.Click += new System.EventHandler(this.locaçãoToolStripMenuItem_Click);
+            this.locacaoToolStripMenuItem.Name = "locacaoToolStripMenuItem";
+            this.locacaoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.locacaoToolStripMenuItem.Text = "Locação";
+            this.locacaoToolStripMenuItem.Click += new System.EventHandler(this.locacaoToolStripMenuItem_Click);
             // 
             // sairToolStripMenuItem
             // 
@@ -215,8 +216,8 @@
         private System.Windows.Forms.ToolStripMenuItem usuarioToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem livroToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem manutencaoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem devoluçãoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem locaçãoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem devolucaoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem locacaoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sairToolStripMenuItem;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.PictureBox pictureBox1;

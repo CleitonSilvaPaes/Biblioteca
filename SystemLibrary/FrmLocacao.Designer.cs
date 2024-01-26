@@ -32,6 +32,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.btnReserva = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -47,8 +48,6 @@
             this.btnRetirada = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.lblId = new System.Windows.Forms.Label();
-            this.sqLiteCommand1 = new System.Data.SQLite.SQLiteCommand();
-            this.btnReserva = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -98,6 +97,17 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Locação";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // btnReserva
+            // 
+            this.btnReserva.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnReserva.Location = new System.Drawing.Point(47, 282);
+            this.btnReserva.Name = "btnReserva";
+            this.btnReserva.Size = new System.Drawing.Size(184, 31);
+            this.btnReserva.TabIndex = 14;
+            this.btnReserva.Text = "Efetuar Reserva";
+            this.btnReserva.UseVisualStyleBackColor = true;
+            this.btnReserva.Click += new System.EventHandler(this.btnReserva_Click);
             // 
             // btnCancelar
             // 
@@ -249,20 +259,6 @@
             this.lblId.TabIndex = 0;
             this.lblId.Text = "ID: ";
             // 
-            // sqLiteCommand1
-            // 
-            this.sqLiteCommand1.CommandText = null;
-            // 
-            // btnReserva
-            // 
-            this.btnReserva.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnReserva.Location = new System.Drawing.Point(47, 282);
-            this.btnReserva.Name = "btnReserva";
-            this.btnReserva.Size = new System.Drawing.Size(184, 31);
-            this.btnReserva.TabIndex = 14;
-            this.btnReserva.Text = "Efetuar Reserva";
-            this.btnReserva.UseVisualStyleBackColor = true;
-            // 
             // FrmLocacao
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -299,7 +295,6 @@
         private System.Windows.Forms.DataGridView dtGridLivros;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnRetirada;
-        private System.Data.SQLite.SQLiteCommand sqLiteCommand1;
         private System.Windows.Forms.TextBox txtNomeUsuario;
         private System.Windows.Forms.Label lblNomeUsuario;
         private System.Windows.Forms.TextBox txtId;

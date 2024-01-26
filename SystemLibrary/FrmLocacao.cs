@@ -17,9 +17,6 @@ namespace SystemLibrary
         public List<Usuarios> ListaUsuarios { get; set; }
         public List<Retirada> ListaRetirados { get; set; }
         public List<Reservas> ListaReservas { get; set; }
-
-
-
         public Usuarios Usuario { get; set; }
 
         public FrmLocacao(Usuarios usuario)
@@ -215,78 +212,6 @@ namespace SystemLibrary
             }
         }
 
-        private void btnRetirada_Click(object sender, EventArgs e)
-        {
-            this.ListaLivros = Livro.GetLivros();
-            this.ListaUsuarios = Usuarios.GetUsuarios();
-            this.ListaRetirados = Retirada.GetRetirados();
-
-
-            var livro = ListaLivros.FirstOrDefault(l => l.Nome.ToLower() == txtNomeLivro.Text.ToLower());
-            var usuario = obterUsuario();
-
-            if (livro == null)
-            {
-                MostrarMensagem("Selecione um livro valido!", "Emprestimo Livro", MessageBoxIcon.Warning);
-                return;
-            }
-            if (usuario == null)
-            {
-                MostrarMensagem("Selecione um Usuario valido!", "Emprestimo Livro", MessageBoxIcon.Warning);
-                return;
-            }
-            
-            if (!verificaSeLivroRetirado(usuario))
-            {
-                MostrarMensagem("Ja foi atingido sua cota de livros", "Emprestimo Livro", MessageBoxIcon.Warning);
-                return;
-            }
-            double multa = verificaSeUsuarioMulta(usuario);
-            if (multa > 0)
-            {
-                MostrarMensagem($"Usuario Possui Multa de {multa}, Devolva os livros e pague a multa",
-                    "Emprestimo Livro", MessageBoxIcon.Warning);
-                Usuarios.UpdateUsuario(usuario);
-                return;
-            }
-            int ultimoId;
-            try
-            {
-                ultimoId = ListaRetirados.Max(u => u.ID);
-                ultimoId += 1;
-            }
-            catch { ultimoId = 1; }
-            Retirada retirada = new Retirada
-            {
-                ID = ultimoId,
-                DataRetirada = DateTime.Now,
-                DataDevolucao = DateTime.Now.AddDays(7),
-                FuncionarioID = Usuario.ID,
-                UsuarioID = usuario.ID,
-                LivroID = livro.ID,
-                Multa = 0
-            };
-            if (Retirada.AddRetirada(retirada))
-            {
-                usuario.LivrosRetirados += 1;
-                livro.Status = "Retirado";
-                Livro.UpdateLivro(livro);
-                Usuarios.UpdateUsuario(usuario);
-                MostrarMensagem($"Usuario {usuario.Usuario}, Retirou Livro com Sucesso.",
-                    "Emprestimo Livro", MessageBoxIcon.Information);
-                return;
-            }
-            else
-            {
-                MostrarMensagem($"Usuario {usuario.Usuario}, Nao foi possivel retirar.",
-                    "Emprestimo Livro", MessageBoxIcon.Error);
-            }
-            this.ListaLivros = Livro.GetLivros();
-            this.ListaUsuarios = Usuarios.GetUsuarios();
-            this.ListaRetirados = Retirada.GetRetirados();
-
-        }
-
         private bool verificaSeLivroRetirado(Usuarios usuario)
         {
             var retirados = ListaRetirados
@@ -349,6 +274,158 @@ namespace SystemLibrary
         private void MostrarMensagem(string mensagem, string titulo, MessageBoxIcon icone)
         {
             MessageBox.Show(mensagem, titulo, MessageBoxButtons.OK, icone);
+        }
+
+        private void btnRetirada_Click(object sender, EventArgs e)
+        {
+            ListaLivros = Livro.GetLivros();
+            ListaUsuarios = Usuarios.GetUsuarios();
+            ListaRetirados = Retirada.GetRetirados();
+
+            Usuarios usuario;
+            var livro = ListaLivros.FirstOrDefault(l => l.Nome.ToLower() == txtNomeLivro.Text.ToLower());
+            if (Usuario.Tipo != "Cliente")
+                usuario = obterUsuario();
+            else
+            {
+                usuario = Usuario;
+            }
+
+            if (usuario == null)
+            {
+                MostrarMensagem("Selecione um Usuario valido!", "Emprestimo Livro", MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (livro == null)
+            {
+                MostrarMensagem("Selecione um livro valido!", "Emprestimo Livro", MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!verificaSeLivroRetirado(usuario))
+            {
+                MostrarMensagem("Ja foi atingido sua cota de livros", "Emprestimo Livro", MessageBoxIcon.Warning);
+                return;
+            }
+            var retirado = ListaRetirados
+                .Where(r => r.LivroID == livro.ID)
+                .Where(r => r.UsuarioID == usuario.ID)
+                .ToList();
+            if (retirado.Any())
+            {
+                MostrarMensagem("O livro ja esta em posse !", "Emprestimo Livro", MessageBoxIcon.Warning);
+                return;
+            }
+
+
+            double multa = verificaSeUsuarioMulta(usuario);
+            if (multa > 0)
+            {
+                MostrarMensagem($"Usuario Possui Multa de {multa}, Devolva os livros e pague a multa",
+                    "Emprestimo Livro", MessageBoxIcon.Warning);
+                Usuarios.UpdateUsuario(usuario);
+                return;
+            }
+            int ultimoId;
+            try
+            {
+                ultimoId = ListaRetirados.Max(u => u.ID);
+                ultimoId += 1;
+            }
+            catch { ultimoId = 1; }
+            Retirada retirada = new Retirada
+            {
+                ID = ultimoId,
+                DataRetirada = DateTime.Now,
+                DataDevolucao = DateTime.Now.AddDays(7),
+                FuncionarioID = Usuario.ID,
+                UsuarioID = usuario.ID,
+                LivroID = livro.ID,
+                Multa = 0
+            };
+            if (Retirada.AddRetirada(retirada))
+            {
+                usuario.LivrosRetirados += 1;
+                livro.Status = "Retirado";
+                Livro.UpdateLivro(livro);
+                Usuarios.UpdateUsuario(usuario);
+                MostrarMensagem($"Usuario {usuario.Usuario}, Retirou Livro com Sucesso.",
+                    "Emprestimo Livro", MessageBoxIcon.Information);
+            }
+            else
+            {
+                MostrarMensagem($"Usuario {usuario.Usuario}, Nao foi possivel retirar.",
+                    "Emprestimo Livro", MessageBoxIcon.Error);
+            }
+            this.ListaLivros = Livro.GetLivros();
+            this.ListaUsuarios = Usuarios.GetUsuarios();
+            this.ListaRetirados = Retirada.GetRetirados();
+            LimparDados();
+        }
+
+        private void btnReserva_Click(object sender, EventArgs e)
+        {
+            ListaLivros = Livro.GetLivros();
+            ListaUsuarios = Usuarios.GetUsuarios();
+            ListaRetirados = Retirada.GetRetirados();
+            ListaReservas = Reservas.GetReservas();
+
+            Usuarios usuario;
+            var livro = ListaLivros.FirstOrDefault(l => l.Nome.ToLower() == txtNomeLivro.Text.ToLower());
+            if (Usuario.Tipo != "Cliente")
+                usuario = obterUsuario();
+            else
+            {
+                usuario = Usuario;
+            }
+
+
+            if (usuario == null)
+            {
+                MostrarMensagem("Selecione um Usuario valido!", "Reserva Livro", MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (livro == null)
+            {
+                MostrarMensagem("Selecione um livro valido!", "Reserva Livro", MessageBoxIcon.Warning);
+                return;
+            }
+
+            var retirados = ListaRetirados
+                .Where(r => r.LivroID == livro.ID && r.UsuarioID == usuario.ID).ToList();
+            var resevados = ListaReservas
+                .Where(r => r.LivroID == livro.ID && r.UsuarioID == usuario.ID).ToList();
+            if (retirados.Any())
+            {
+                MostrarMensagem("Livro ja esta em posse!", "Reserva Livro", MessageBoxIcon.Warning);
+                return;
+            }
+            if (resevados.Any())
+            {
+                MostrarMensagem($"Usuario {usuario.Usuario}, ja tem reserva!", "Reserva Livro", MessageBoxIcon.Warning);
+                return;
+            }
+
+            livro.Status = "Reservado";
+            int idReservado = UltimoIdReserva() + 1;
+            Reservas reservas = new Reservas
+            {
+                ID = idReservado,
+                FuncionarioID = Usuario.ID,
+                UsuarioID = usuario.ID,
+                LivroID = livro.ID
+            };
+            Reservas.InsertReserva( reservas );
+            Livro.UpdateLivro( livro );
+            MostrarMensagem($"Usuario {usuario.Usuario}, reservou com sucesso!", "Reserva Livro", MessageBoxIcon.Warning);
+
+        }
+
+        private int UltimoIdReserva()
+        {
+            return (ListaReservas.Count > 0) ? ListaReservas.Max(r => r.ID) : 0;
         }
     }
 }
